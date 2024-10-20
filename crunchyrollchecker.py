@@ -83,21 +83,16 @@ def check_version():
 
 def download_new_version():
     try:
-        # Télécharge la nouvelle version depuis l'URL
-        response = requests.get(DOWNLOAD_URL, stream=True)
+        # Récupérer le contenu du fichier via l'API GitHub
+        response = requests.get(DOWNLOAD_URL, headers={'Accept': 'application/vnd.github.v3.raw'})
         if response.status_code == 200:
-            # Sauvegarde la nouvelle version dans un fichier temporaire
-            new_version_path = "updated_script.py"
-            with open(new_version_path, 'wb') as f:
-                shutil.copyfileobj(response.raw, f)
-            print(f"{Fore.GREEN}[INFO] Nouvelle version téléchargée avec succès.{Style.RESET_ALL}")
-
-            # Remplace l'ancienne version par la nouvelle
+            # Sauvegarde la nouvelle version dans un fichier
             script_path = sys.argv[0]
-            shutil.move(new_version_path, script_path)
-            print(f"{Fore.GREEN}[INFO] Le script a été mis à jour.{Style.RESET_ALL}")
+            with open(script_path, 'wb') as f:
+                f.write(response.content)
+            print(f"{Fore.GREEN}[INFO] Nouvelle version téléchargée avec succès.{Style.RESET_ALL}")
         else:
-            print(f"{Fore.RED}[ERROR] Impossible de télécharger la nouvelle version.{Style.RESET_ALL}")
+            print(f"{Fore.RED}[ERROR] Impossible de télécharger la nouvelle version : {response.status_code}.{Style.RESET_ALL}")
             exit(1)
     except requests.RequestException as e:
         print(f"{Fore.RED}[ERROR] Erreur lors du téléchargement de la nouvelle version : {e}{Style.RESET_ALL}")
