@@ -109,7 +109,7 @@ def check_credentials(email, password, proxy):
     
     driver = webdriver.Firefox(options=options)
     
-    driver.get("https://www.netflix.com/login")
+    driver.get("https://sso.crunchyroll.com/fr/login")
     
     username_field = driver.find_element(By.NAME, "userLoginId")
     password_field = driver.find_element(By.NAME, "password")
