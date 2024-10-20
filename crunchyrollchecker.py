@@ -24,7 +24,7 @@ CURRENT_VERSION = "1.0.2"
 VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/refs/heads/main/latest_version.txt"  # Remplacez par votre URL réelle
 
 # URL de téléchargement de la nouvelle version
-DOWNLOAD_URL = "https://api.github.com/repos/Sukidadev/crunchyrollchecker/contents/crunchyrollchecker.py"
+DOWNLOAD_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/main/crunchyrollchecker.py"
 
 # Liste des proxys à utiliser
 proxies = [
