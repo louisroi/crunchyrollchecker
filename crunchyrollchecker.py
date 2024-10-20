@@ -111,7 +111,7 @@ def check_credentials(email, password, proxy):
     
     driver.get("https://sso.crunchyroll.com/fr/login")
     
-    username_field = driver.find_element(By.NAME, "userLoginId")
+    username_field = driver.find_element(By.NAME, "email")
     password_field = driver.find_element(By.NAME, "password")
     
     username_field.send_keys(email)
