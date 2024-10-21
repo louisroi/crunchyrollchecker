@@ -14,18 +14,18 @@ from colorama import Fore, Style, init
 import sys
 import subprocess
 
-# Initialisation de Colorama
+
 init(autoreset=True)
 
-# Version actuelle du script
+
 CURRENT_VERSION = "1.0.2"
 
-# URL du fichier texte qui contient la version la plus récente
-VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/refs/heads/main/latest_version.txt"  # Remplacez par votre URL réelle
 
-# URL de téléchargement de la nouvelle version
+VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/refs/heads/main/latest_version.txt"  
+
+
 DOWNLOAD_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/main/crunchyrollchecker.py"
-# Liste des proxys à utiliser
+
 PROXIES = [
     "93291889-zone-custom-region-FR-sessid-DgtOgfNY-sessTime-60:0llEad0L@f.proxys5.net:6200",
     "93291889-zone-custom-region-FR-sessid-PK0y3olo-sessTime-60:0llEad0L@f.proxys5.net:6200",
@@ -67,25 +67,25 @@ def print_ascii_art():
 
 def check_version():
     try:
-        # Récupère la version la plus récente depuis l'URL
+
         response = requests.get(VERSION_URL)
         latest_version = response.text.strip()
 
         if CURRENT_VERSION != latest_version:
             print(f"{Fore.RED}[ERROR] Vous utilisez la version {CURRENT_VERSION}.")
             print(f"{Fore.RED}[INFO] Une nouvelle version ({latest_version}) est disponible. Téléchargement en cours...{Style.RESET_ALL}")
-            download_new_version()  # Télécharge et remplace le fichier actuel
-            relaunch_script()  # Relance le script après mise à jour
+            download_new_version() 
+            relaunch_script() 
     except requests.RequestException as e:
         print(f"{Fore.RED}[ERROR] Impossible de vérifier la version. Détails : {e}")
-        exit(1)  # Si la version ne peut pas être vérifiée, on empêche l'exécution
+        exit(1) 
 
 def download_new_version():
     try:
-        # Récupérer le contenu du fichier via l'API GitHub
+
         response = requests.get(DOWNLOAD_URL, headers={'Accept': 'application/vnd.github.v3.raw'})
         if response.status_code == 200:
-            # Sauvegarde la nouvelle version dans un fichier
+
             script_path = sys.argv[0]
             with open(script_path, 'wb') as f:
                 f.write(response.content)
@@ -99,9 +99,9 @@ def download_new_version():
 
 def relaunch_script():
     print(f"{Fore.CYAN}[INFO] Relancement du script mis à jour...{Style.RESET_ALL}")
-    # Utilise subprocess pour relancer le script
+
     subprocess.Popen([sys.executable] + sys.argv)
-    exit(0)  # Quitte le script actuel
+    exit(0) 
 
 def check_credentials(email, password, proxy):
     options = Options()
@@ -139,7 +139,7 @@ def run_script(file_path):
             for i, combo in enumerate(combos):
                 email = combo["email"]
                 password = combo["password"]
-                proxy_used = PROXIES[i % len(PROXIES)]  # Utilisez un proxy de la liste
+                proxy_used = PROXIES[i % len(PROXIES)] 
 
 
                 result = f"Test de connexion pour {email}:{password} via proxy {proxy_used}..."
@@ -175,7 +175,7 @@ def open_file_dialog():
 def main():
     print_ascii_art()
     
-    check_version()  # Vérifier la version avant de continuer
+    check_version() 
 
     file_path = open_file_dialog()
 
