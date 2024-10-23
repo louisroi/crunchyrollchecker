@@ -1,7 +1,7 @@
 # 📺 Guide d'Utilisation de Crunchyroll Checker<br><br>
 ## 🚀 Prérequis
 
-assurez-vous d'avoir les éléments suivants :
+Assurez-vous d'avoir les éléments suivants :
 
 Python 3.x
 Vérifiez son installation avec :
