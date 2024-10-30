@@ -21,10 +21,10 @@ init(autoreset=True)
 CURRENT_VERSION = "1.0.2"
 
 
-VERSION_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/refs/heads/main/latest_version.txt"  
+VERSION_URL = "https://raw.githubusercontent.com/louisroi/crunchyrollchecker/refs/heads/main/latest_version.txt"  
 
 
-DOWNLOAD_URL = "https://raw.githubusercontent.com/Sukidadev/crunchyrollchecker/main/crunchyrollchecker.py"
+DOWNLOAD_URL = "https://raw.githubusercontent.com/louisroi/crunchyrollchecker/main/crunchyrollchecker.py"
 
 PROXIES = [
     "93291889-zone-custom-region-FR-sessid-DgtOgfNY-sessTime-60:0llEad0L@f.proxys5.net:6200",
